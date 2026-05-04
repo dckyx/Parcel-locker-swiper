@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 
 const reasons = {
+  // Predefined reasons for parcel locker ratings
   parcel_locker: {
     right: [
       "Wygodny dojazd",
@@ -19,6 +20,7 @@ const reasons = {
       "Częste awarie",
     ],
   },
+  // Predefined reasons for pickup point (POP) ratings
   pop: {
     right: [
       "Przesympatyczna obsługa",
@@ -46,6 +48,7 @@ export default function Feedback({
   return (
     <AnimatePresence>
       {activeAction && (
+        // Overlay backdrop
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -53,27 +56,21 @@ export default function Feedback({
           className="fixed inset-0 bg-black/40 z-50 flex items-end justify-center"
           onClick={onClose}
         >
+          {/* Modal sheet with feedback reasons */}
           <motion.div
             initial={{ y: "100%" }}
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="relative bg-white w-full max-w-md rounded-t-3xl p-6 pb-12 shadow-2xl"
+            className="bg-white w-full max-w-md rounded-t-3xl p-6 pb-12 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <button
-              type="button"
-              onClick={onClose}
-              className="absolute right-5 top-5 text-gray-500 hover:text-gray-900 focus:outline-none"
-              aria-label="Close"
-            >
-              ×
-            </button>
             <h3 className="text-xl font-bold text-gray-800 mb-5 text-center">
               {activeAction.direction === "right"
                 ? "Za co lubisz ten punkt?"
                 : "Co jest nie tak z tym punktem?"}
             </h3>
+            {/* List of reasons to choose from */}
             <div className="flex flex-col gap-3">
               {reasons[
                 activeAction.locker.type[0] === "pop" ? "pop" : "parcel_locker"
@@ -87,13 +84,16 @@ export default function Feedback({
                 </button>
               ))}
             </div>
-            <button
-              type="button"
-              onClick={onSkip}
-              className="mt-6 w-full py-3 px-4 bg-yellow-100 border border-yellow-200 rounded-xl text-yellow-900 font-semibold hover:bg-yellow-200 transition-colors"
-            >
-              Pomiń
-            </button>
+            {/* Skip feedback option */}
+            <div className="mt-4">
+              <button
+                type="button"
+                onClick={onSkip}
+                className="w-full py-3 px-4 bg-amber-50 border border-amber-200 rounded-xl text-amber-900 font-medium hover:bg-amber-100 transition-colors active:scale-95"
+              >
+                Pomiń
+              </button>
+            </div>
           </motion.div>
         </motion.div>
       )}
