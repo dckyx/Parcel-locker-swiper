@@ -14,14 +14,52 @@ import {
 export default function CityStats({
   data,
   onChartClick,
+  filter,
+  setFilter,
 }: {
   data: any;
   onChartClick: (state: any) => void;
+  filter: "all" | "parcel_locker" | "pop";
+  setFilter: (val: "all" | "parcel_locker" | "pop") => void;
 }) {
   if (!data) return null;
 
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      {/* Przełącznik filtrów */}
+      <div className="flex justify-center gap-2 bg-white p-1.5 rounded-xl shadow-sm border border-gray-100 w-fit mx-auto">
+        <button
+          onClick={() => setFilter("all")}
+          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+            filter === "all"
+              ? "bg-blue-500 text-white"
+              : "text-gray-600 hover:bg-gray-100"
+          }`}
+        >
+          Wszystkie
+        </button>
+        <button
+          onClick={() => setFilter("parcel_locker")}
+          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+            filter === "parcel_locker"
+              ? "bg-blue-500 text-white"
+              : "text-gray-600 hover:bg-gray-100"
+          }`}
+        >
+          Tylko Paczkomaty
+        </button>
+        <button
+          onClick={() => setFilter("pop")}
+          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+            filter === "pop"
+              ? "bg-blue-500 text-white"
+              : "text-gray-600 hover:bg-gray-100"
+          }`}
+        >
+          Tylko Punkty POP
+        </button>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
           <h2 className="text-lg font-bold mb-6 text-gray-800">
@@ -103,7 +141,7 @@ export default function CityStats({
           <h2 className="text-lg font-bold mb-2 text-gray-800 text-center">
             Ogółem w mieście
           </h2>
-          <div className="h-64 flex-1">
+          <div className="h-64">
             <ResponsiveContainer
               width="100%"
               height="100%"
@@ -137,7 +175,7 @@ export default function CityStats({
 
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
           <h2 className="text-lg font-bold mb-2 text-gray-800 text-center">
-            Top powody na PLUS
+            Top powody pozytywne
           </h2>
           <div className="h-64">
             <ResponsiveContainer
@@ -154,6 +192,7 @@ export default function CityStats({
                   angle={-45}
                   textAnchor="end"
                   height={60}
+                  direction="right"
                 />
                 <Tooltip
                   cursor={{ fill: "transparent" }}
@@ -175,7 +214,7 @@ export default function CityStats({
 
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
           <h2 className="text-lg font-bold mb-2 text-gray-800 text-center">
-            Top powody na MINUS
+            Top powody negatywne
           </h2>
           <div className="h-64">
             <ResponsiveContainer

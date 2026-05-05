@@ -1,8 +1,23 @@
-export const getCityChartsData = (votes: any[], selectedCity: string) => {
+// Get analytics for a specific city with type filter
+export const getCityChartsData = (
+  votes: any[],
+  selectedCity: string,
+  filter: "all" | "parcel_locker" | "pop" = "all",
+) => {
   if (!selectedCity) return null;
 
-  // Filter votes for selected city
-  const cityVotes = votes.filter((v) => v.city === selectedCity);
+  // Filter votes for selected city AND selected locker type
+  const cityVotes = votes.filter((v) => {
+    if (v.city !== selectedCity) return false;
+
+    const isPop = (v.locker_id || "").substring(0, 3).toUpperCase() === "POP";
+
+    if (filter === "pop" && !isPop) return false;
+    if (filter === "parcel_locker" && isPop) return false;
+
+    return true;
+  });
+
   const counts: Record<string, { likes: number; dislikes: number }> = {};
   let totalLikes = 0;
   let totalDislikes = 0;

@@ -73,7 +73,11 @@ export default function Feedback({
             {/* List of reasons to choose from */}
             <div className="flex flex-col gap-3">
               {reasons[
-                activeAction.locker.type[0] === "pop" ? "pop" : "parcel_locker"
+                (activeAction.locker.name || activeAction.locker.id || "")
+                  .substring(0, 3)
+                  .toUpperCase() === "POP"
+                  ? "pop"
+                  : "parcel_locker"
               ][activeAction.direction as "left" | "right"].map((reason) => (
                 <button
                   key={reason}

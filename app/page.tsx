@@ -5,7 +5,9 @@ import Feedback from "@/components/Feedback";
 import LocationHeader from "@/components/LocationHeader";
 import SwipeControls from "@/components/SwipeControls";
 import { useSwiper } from "@/hooks/useSwiper";
-
+import Link from "next/link";
+import { BarChart3 } from "lucide-react";
+import Footer from "@/components/Footer";
 export default function Home() {
   // Load swiper state and handlers from custom hook
   const {
@@ -34,23 +36,39 @@ export default function Home() {
   // Show loading state
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <p className="text-gray-500 animate-pulse">
-          Searching for InPost parcel lockers...
-        </p>
-      </div>
+      <>
+        <div className="flex items-center justify-center min-h-screen bg-gray-50">
+          <Link
+            href="/dashboard"
+            className="absolute top-6 right-6 p-3 bg-white rounded-xl shadow-sm border-gray-100 text-gray-400 hover:text-blue-500 hover:shadow-md transition-all group"
+            title="Stats"
+          >
+            <BarChart3 size={24} />
+          </Link>
+          <p className="text-gray-500 animate-pulse">
+            Searching for InPost parcel lockers...
+          </p>
+        </div>
+        <Footer />
+      </>
     );
   }
 
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen bg-gray-50 overflow-hidden">
+    <main className="relative flex flex-col items-center justify-center min-h-[100dvh] bg-gray-50 overflow-hidden pb-16">
+      {/* switch to dashboard button */}
+      <Link
+        href="/dashboard"
+        className="absolute top-6 right-6 p-3 bg-white rounded-xl shadow-sm border-gray-100 text-gray-400 hover:text-blue-500 hover:shadow-md transition-all group"
+        title="Stats"
+      >
+        <BarChart3 size={24} />
+      </Link>
       {/* Location selector at top */}
       <LocationHeader city={city} setCity={setCity} />
-
       <h1 className="text-3xl font-bold mb-8 text-gray-800 tracking-tight">
-        Parcel locker swiper
+        InPost swiper :]
       </h1>
-
       {/* Empty state or card stack */}
       {lockers.length === 0 ? (
         <div className="flex items-center justify-center w-80 h-[28rem] bg-white rounded-3xl shadow-sm border border-gray-100">
@@ -84,7 +102,6 @@ export default function Home() {
           <SwipeControls onAction={handleButtonAction} />
         </>
       )}
-
       {/* Feedback modal */}
       <Feedback
         activeAction={activeAction}
@@ -92,6 +109,7 @@ export default function Home() {
         onSkip={handleSkipReason}
         onSelect={handleSelectReason}
       />
+      <Footer className="absolute bottom-6 left-1/2 -translate-x-1/2 w-full z-10" />
     </main>
   );
 }

@@ -7,7 +7,15 @@ import {
   PanInfo,
   useAnimation,
 } from "framer-motion";
-import { MapPin, CreditCard, Accessibility } from "lucide-react";
+import {
+  MapPin,
+  CreditCard,
+  Accessibility,
+  Clock,
+  Info,
+  Building,
+  TreePine,
+} from "lucide-react";
 import Image from "next/image";
 import { useEffect } from "react";
 
@@ -25,13 +33,11 @@ export default function Card({
   isNext?: boolean;
 }) {
   const x = useMotionValue(0);
-  const y = useMotionValue(0); // vertical movement for skip animation
-  const rotate = useTransform(x, [-200, 200], [-15, 15]); // rotation based on drag
+  const y = useMotionValue(0);
+  const rotate = useTransform(x, [-200, 200], [-15, 15]);
 
-  // Animation controller for triggering exit animations from parent
   const controls = useAnimation();
 
-  // Trigger exit animation when isExiting prop changes
   useEffect(() => {
     if (isExiting) {
       controls
@@ -49,7 +55,6 @@ export default function Card({
   }, [isExiting, controls, onExitComplete]);
 
   const handleDragEnd = (_event: unknown, info: PanInfo) => {
-    // Minimum drag distance to trigger swipe action
     const pix = 100;
     if (info.offset.x > pix) onSwipe("right", locker);
     else if (info.offset.x < -pix) onSwipe("left", locker);
@@ -60,13 +65,13 @@ export default function Card({
       style={{ x, y, rotate, zIndex: isNext ? 0 : 1 }}
       animate={controls}
       drag="x"
-      dragConstraints={{ left: 0, right: 0 }} // card returns to center if not dragged far enough
-      dragElastic={0.7} // elastic effect when dragging
+      dragConstraints={{ left: 0, right: 0 }}
+      dragElastic={0.7}
       onDragEnd={handleDragEnd}
-      className="absolute w-80 h-[28rem] bg-white rounded-3xl shadow-lg overflow-hidden cursor-grab active:cursor-grabbing border border-gray-100 will-change-transform"
+      className="absolute w-80 h-[28rem] bg-white rounded-3xl shadow-lg overflow-hidden cursor-grab active:cursor-grabbing border border-gray-100 will-change-transform flex flex-col"
     >
-      {/* Locker image section */}
-      <div className="h-1/2 bg-gray-100 relative">
+      {/* Photo */}
+      <div className="h-1/2 bg-gray-100 relative shrink-0">
         <Image
           src={
             locker.image_url ||
@@ -79,26 +84,71 @@ export default function Card({
         />
       </div>
 
-      {/* Locker details and features section */}
-      <div className="p-5 flex flex-col justify-between h-1/2 bg-white">
+      {/* Details */}
+      <div className="p-4 flex flex-col h-1/2 bg-white overflow-y-auto custom-scrollbar">
+        {/* header and address */}
         <div>
-          <h2 className="text-2xl font-bold text-gray-800">{locker.name}</h2>
-          <p className="text-sm text-gray-500 mt-2 flex items-start gap-1">
-            <MapPin size={16} className="shrink-0 mt-0.5 text-gray-400" />{" "}
-            {locker.address_details.city}, ul. {locker.address.line1}
+          <h2 className="text-xl font-bold text-gray-800 leading-tight">
+            {locker.name}
+          </h2>
+          <p className="text-xs text-gray-500 mt-1.5 flex items-start gap-1.5">
+            <MapPin size={14} className="shrink-0 mt-0.5 text-gray-400" />
+            <span>
+              ul. {locker.address_details?.street}{" "}
+              {locker.address_details?.building_number},<br />
+              {locker.address_details?.post_code} {locker.address_details?.city}
+            </span>
           </p>
         </div>
 
-        {/* Feature badges - easy access and payment availability */}
-        <div className="flex flex-wrap gap-2 mt-4">
-          {locker.easy_access_zone && (
-            <span className="flex items-center gap-1 bg-blue-50 text-blue-700 border border-blue-100 text-xs px-2 py-1 rounded-full">
-              <Accessibility size={12} /> Ułatwiony dostęp{" "}
+        {/* localisation and opening hours */}
+        <div className="mt-3 space-y-2">
+          {locker.location_description && (
+            <p className="text-xs text-gray-600 flex items-start gap-1.5 leading-snug">
+              <Info size={14} className="shrink-0 mt-0.5 text-blue-500" />
+              {locker.location_description}
+            </p>
+          )}
+
+          <p className="text-xs text-gray-700 flex items-start gap-1.5 font-medium">
+            <Clock size={14} className="shrink-0 mt-0.5 text-orange-500" />
+            {locker.location_247
+              ? "Czynne 24/7"
+              : locker.opening_hours || "Brak danych o godzinach"}
+          </p>
+        </div>
+
+        {/* badges */}
+        <div className="flex flex-wrap gap-2 mt-auto pt-4">
+          {/* outdoor/indoor */}
+          {locker.location_type && (
+            <span className="flex items-center gap-1 bg-gray-50 text-gray-600 border border-gray-200 text-[10px] px-2 py-1 rounded-full font-medium">
+              {locker.location_type === "Indoor" ? (
+                <>
+                  <Building size={12} /> Wewnątrz
+                </>
+              ) : (
+                <>
+                  <TreePine size={12} /> Na zewnątrz
+                </>
+              )}
             </span>
           )}
+
+          {/* easy access */}
+          {locker.easy_access_zone && (
+            <span className="flex items-center gap-1 bg-blue-50 text-blue-700 border border-blue-100 text-[10px] px-2 py-1 rounded-full font-medium">
+              <Accessibility size={12} /> Ułatwiony dostęp
+            </span>
+          )}
+
+          {/* payment */}
           {locker.payment_available && (
-            <span className="flex items-center gap-1 bg-green-50 text-green-700 border boerder-green-100 text-xs px-2 py-1 rounded-full">
-              <CreditCard size={12} /> Płacisz na miejscu{" "}
+            <span
+              className="flex items-center gap-1 bg-green-50 text-green-700 border border-green-100 text-[10px] px-2 py-1 rounded-full font-medium"
+              title={locker.payment_point_descr}
+            >
+              <CreditCard size={12} /> Płacisz na miejscu
             </span>
           )}
         </div>

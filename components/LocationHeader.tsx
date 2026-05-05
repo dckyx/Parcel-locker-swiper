@@ -18,7 +18,7 @@ export default function LocationHeader({
   };
 
   return (
-    <div className="w-80 bg-white rounded-2xl shadow-sm border border-gray-100 p-3 mb-6 flex items-center gap-3 transition-all">
+    <div className="w-50 bg-white rounded-2xl shadow-sm border border-gray-100 p-3 mb-6 flex items-center gap-3 transition-all mt-6 md:mt-0 md:w-80">
       <MapPin size={20} className="text-gray-400 shrink-0" />
       {/* Toggle between edit and view mode */}
       {isEditingCity ? (
