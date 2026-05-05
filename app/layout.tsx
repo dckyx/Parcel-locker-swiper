@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "InPost parcel locker swiper",
+  title: "InPost locker swiper",
   icons: {
     icon: "/favicon.png",
   },
