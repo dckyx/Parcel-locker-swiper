@@ -49,7 +49,7 @@ export default function Home() {
             Searching for InPost parcel lockers...
           </p>
         </div>
-        <Footer />
+        <Footer className="absolute bottom-6 left-1/2 -translate-x-1/2 w-full z-10" />
       </>
     );
   }
