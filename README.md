@@ -1,36 +1,93 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Parcel locker swiper
 
-## Getting Started
+## Author
 
-First, run the development server:
+- **Name:** Hubert Poskrobko
+- **Email:** hubertposs@wp.pl
+
+## Overview
+
+A web app that connects interactive browsing of InPost parcel lockers/pickup points in a user-specified location with an analytics dashboard. The project solves the problem of boring feedback forms by introducing an engaging swiping UX known from dating apps, delivering vital statistics to correctly maintain delivery points.
+
+## Demo & Description
+
+The project features a main interface for interacting with parcel lockers and an analytics dashboard that presents statistics collected in the database. The application fetches data points from a dedicated InPost API.
+
+I chose a component-based architecture, separating elements responsible for swipe gestures, the feedback form, controls, as well as local and global statistics. Also, I made a reusable card component for displaying locker information.
+
+**Online demo:**
+
+- [Main Application](https://parcel-locker-swiper.hubertposs.workers.dev)
+- [Analytics Dashboard](https://parcel-locker-swiper.hubertposs.workers.dev/dashboard)
+
+**Some screenshots:**
+![Main UI](./public/Main_page.png)
+
+![Dashboard UI](./public/Dashboard.png)
+
+## Technologies
+
+- **Next.js:** Main frontend framework, efficient rendering and routing.
+- **TypeScript:** Typing safety, catching issues during code compilation.
+- **Tailwind CSS:** Rapid modern styling.
+- **Framer Motion:** Interactive swipe gestures and animations.
+- **Recharts:** Data visualisation charts.
+- **Lucide React:** UI icon set.
+- **Supabase:** SaaS lightweight backend and database for storing user feedback.
+- **CloudFlare:** Demo deployment.
+
+## How to run
+
+### Prerequisites
+
+- Node.js (ver. 18 or higher)
+- Package manager (npm, yarn, pnpm, bun)
+- Supabase account and API keys
+
+From Supabase you're gonna need:
+
+- NEXT_PUBLIC_SUPABASE_URL
+- NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+### Build & run
 
 ```bash
+# Clone the repo
+git clone https://github.com/dckyx/Parcel-locker-swiper
+cd Parcel-locker-swiper
+
+# Install dependencies
+npm install
+
+# Set up environment variables
+touch .env.local
+echo 'NEXT_PUBLIC_SUPABASE_URL=<your_supabase_url>' >> .env.local
+echo 'NEXT_PUBLIC_SUPABASE_ANON_KEY=<your_supabase_anon_key>' >> .env.local
+
+# Start the development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## What I would do with more time
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Token-based verification** - checking if a user has already voted on a specific locker to prevent duplicate feedback
+- **Geolocation support** - fetching parcel lockers nearby by default
+- **Improved location search** - city suggestions
+- **Expand main page features** - more functions, more locker details, etc.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## AI usage
 
-## Learn More
+I used AI tools like Gemini and GitHub Copilot to help me build this project more efficiently.
 
-To learn more about Next.js, take a look at the following resources:
+- **Planning and Debugging:** I used Gemini to plan the project structure and analyze error logs.
+- **Development:** In my IDE, I used GitHub Copilot and Gemini Code Assist. These tools helped me with:
+  - Writing Tailwind to match both mobile and web browser styles
+  - Building parts of the React components.
+  - Creating code documentation and comments.
+  - Developing the logic for charts.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Verification:** I reviewed and tested all AI-generated code. I adapted the outputs to make sure they follow the project's architecture and work correctly with the API.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Anything else?
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+I just wanted to make something cool instead of another boring pinned map :]
